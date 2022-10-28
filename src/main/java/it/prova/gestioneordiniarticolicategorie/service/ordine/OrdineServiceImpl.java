@@ -8,6 +8,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
 import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
+import it.prova.gestioneordiniarticolicategorie.exception.OrdineConArticoliException;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public class OrdineServiceImpl implements OrdineService {
@@ -71,6 +72,24 @@ public class OrdineServiceImpl implements OrdineService {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 	}
+	
+	@Override
+	public Ordine caricaSingoloElementoEager(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			ordineDAO.setEntityManager(entityManager);
+			return ordineDAO.getEager(id);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 
 	@Override
 	public void aggiorna(Ordine ordine) throws Exception {
@@ -120,6 +139,8 @@ public class OrdineServiceImpl implements OrdineService {
 		try {
 			entityManager.getTransaction().begin();
 			ordineDAO.setEntityManager(entityManager);
+			
+			if(!ordineDAO.get(id).getArticoli().isEmpty()) throw new OrdineConArticoliException("Rimozione di ordine con articoli.");
 			ordineDAO.delete(ordineDAO.get(id));
 			entityManager.getTransaction().commit();
 			
@@ -132,4 +153,30 @@ public class OrdineServiceImpl implements OrdineService {
 		}
 	}
 
+	@Override
+	public void rimuoviArticoli(Long idOrdine) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			entityManager.getTransaction().begin();
+			ordineDAO.setEntityManager(entityManager);
+			articoloDAO.setEntityManager(entityManager);
+	
+			Ordine ordine = ordineDAO.getEager(idOrdine);
+			ordine.getArticoli().clear();
+			articoloDAO.deleteAllArticoliWithOrder(idOrdine);
+			ordineDAO.update(ordine);
+			entityManager.getTransaction().commit();
+			
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	
 }

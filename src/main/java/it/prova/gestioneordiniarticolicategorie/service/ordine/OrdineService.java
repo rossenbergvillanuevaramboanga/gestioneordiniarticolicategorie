@@ -19,11 +19,14 @@ public interface OrdineService {
 	public List<Ordine> listAll() throws Exception;
 
 	public Ordine caricaSingoloElemento(Long id) throws Exception;
+	public Ordine caricaSingoloElementoEager(Long id) throws Exception;
 
 	public void aggiorna(Ordine ordine) throws Exception;
 
 	public void inserisciNuovo(Ordine ordine) throws Exception;
 
 	public void rimuovi(Long id) throws Exception;
+	
+	public void rimuoviArticoli(Long id) throws Exception;
 
 }

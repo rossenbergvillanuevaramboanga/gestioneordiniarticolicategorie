@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
+import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public class ArticoloDAOImpl implements ArticoloDAO {
@@ -57,10 +58,35 @@ public class ArticoloDAOImpl implements ArticoloDAO {
 	}
 
 	@Override
-	public void deleteCategoria(Long idArticolo) {
+	public void deleteCategorie(Long idArticolo) {
 		// TODO Auto-generated method stub
 		entityManager.createNativeQuery("delete from articolo_categoria where articolo_id=?1").setParameter(1, idArticolo).executeUpdate();
 		
 	}
+
+	@Override
+	public void deleteCategoria(Long idArticolo, Long idCategoria) {
+		// TODO Auto-generated method stub
+		entityManager.createNativeQuery("delete from articolo_categoria where articolo_id=?1 and categoria_id=?2 ").setParameter(1, idArticolo).setParameter(2, idCategoria).executeUpdate();
+		
+	}
+
+	@Override
+	public Articolo getEager(Long idArticolo) {
+		// TODO Auto-generated method stub
+		return entityManager.createQuery("from Articolo a left join fetch a.categorie left join fetch a.ordine where a.id = ?1", Articolo.class)
+				.setParameter(1, idArticolo).getResultStream().findFirst().orElse(null);
+	}
+
+	@Override
+	public void deleteAllArticoliWithOrder(Long idOrdine) throws Exception {
+		// TODO Auto-generated method stub
+		if (idOrdine < 0) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.createNativeQuery("delete from Articolo where ordine_id=?1").setParameter(1, idOrdine).executeUpdate();
+		
+	}
+
 
 }

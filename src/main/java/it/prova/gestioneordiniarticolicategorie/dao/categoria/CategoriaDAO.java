@@ -5,6 +5,10 @@ import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 
 public interface CategoriaDAO extends IBaseDAO<Categoria> {
 
-	void deleteArticolo(Long id);
+	void deleteArticoli(Long id);
+
+	void deleteArticolo(Long idCategoria, Long idArticolo);
+
+	Categoria getEager(Long idCategoria);
 
 }

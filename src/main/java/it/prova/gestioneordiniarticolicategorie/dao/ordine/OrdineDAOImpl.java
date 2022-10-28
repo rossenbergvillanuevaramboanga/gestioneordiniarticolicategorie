@@ -56,4 +56,11 @@ public class OrdineDAOImpl implements OrdineDAO {
 		
 	}
 
+	@Override
+	public Ordine getEager(Long id) {
+		// TODO Auto-generated method stub
+		return entityManager.createQuery("from Ordine o left join fetch o.articoli where o.id = ?1", Ordine.class)
+				.setParameter(1, id).getResultStream().findFirst().orElse(null);
+	}
+
 }

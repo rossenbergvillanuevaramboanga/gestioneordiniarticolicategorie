@@ -6,6 +6,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
+import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public interface ArticoloService {
@@ -30,6 +31,11 @@ public interface ArticoloService {
 	
 	// Rimuovi Categoria da Articolo
 	
-	public void rimuoviCategoria(Long idArticolo); 
+	public void rimuoviCategorie(Long idArticolo) throws Exception; 
+	public void rimuoviCategoria(Long idArticolo, Long idCategoria) throws Exception;
+	
+	public void aggiungiCategoria(Articolo articolo, Categoria categoria) throws Exception;
+
+	Articolo caricaSingoloElementoEager(Long idArticolo) throws Exception;
 
 }

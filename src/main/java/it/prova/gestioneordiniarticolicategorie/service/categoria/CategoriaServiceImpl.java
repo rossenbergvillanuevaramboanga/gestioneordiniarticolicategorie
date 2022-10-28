@@ -8,6 +8,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
 import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
+import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 
 public class CategoriaServiceImpl implements CategoriaService {
@@ -67,6 +68,24 @@ public class CategoriaServiceImpl implements CategoriaService {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 	}
+	
+	@Override
+	public Categoria caricaSingoloElementoEager(Long idCategoria) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			categoriaDAO.setEntityManager(entityManager);
+			return categoriaDAO.getEager(idCategoria);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 
 	@Override
 	public void aggiorna(Categoria categoria) throws Exception {
@@ -118,7 +137,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 			entityManager.getTransaction().begin();
 			categoriaDAO.setEntityManager(entityManager);
 			
-			categoriaDAO.deleteArticolo(id);
+			categoriaDAO.deleteArticoli(id);
 			categoriaDAO.delete(categoriaDAO.get(id));
 			
 			entityManager.getTransaction().commit();
@@ -133,4 +152,73 @@ public class CategoriaServiceImpl implements CategoriaService {
 		
 	}
 
+	@Override
+	public void rimuoviArticoli(Long idCategoria) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			entityManager.getTransaction().begin();
+			categoriaDAO.setEntityManager(entityManager);
+			
+			categoriaDAO.deleteArticoli(idCategoria);
+			
+			entityManager.getTransaction().commit();
+			
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public void rimuoviArticolo(Long idCategoria, Long idArticolo) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			entityManager.getTransaction().begin();
+			categoriaDAO.setEntityManager(entityManager);
+			
+			categoriaDAO.deleteArticolo(idCategoria, idArticolo);
+			
+			entityManager.getTransaction().commit();
+			
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public void aggiungiArticolo(Categoria categoria, Articolo articolo) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			
+			entityManager.getTransaction().begin();
+			
+			categoriaDAO.setEntityManager(entityManager);
+			
+			categoria.getArticoli().add(articolo);
+			categoriaDAO.update(categoria);
+			
+			entityManager.getTransaction().commit();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		}finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+			
+		}
+	}
+
+	
 }

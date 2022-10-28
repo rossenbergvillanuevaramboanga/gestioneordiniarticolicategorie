@@ -57,10 +57,24 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	}
 
 	@Override
-	public void deleteArticolo(Long id) {
+	public void deleteArticoli(Long id) {
 		// TODO Auto-generated method stub
 		entityManager.createNativeQuery("delete from articolo_categoria where categoria_id=?1").setParameter(1, id).executeUpdate();
 		
+	}
+
+	@Override
+	public void deleteArticolo(Long idCategoria, Long idArticolo) {
+		// TODO Auto-generated method stub
+		entityManager.createNativeQuery("delete from articolo_categoria where articolo_id=?1 and categoria_id=?2 ").setParameter(2, idArticolo).setParameter(1, idCategoria).executeUpdate();
+		
+	}
+
+	@Override
+	public Categoria getEager(Long idCategoria) {
+		// TODO Auto-generated method stub
+		return entityManager.createQuery("from Categoria c left join fetch c.articoli where c.id = ?1", Categoria.class)
+				.setParameter(1, idCategoria).getResultStream().findFirst().orElse(null);
 	}
 
 }
