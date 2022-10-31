@@ -1,5 +1,6 @@
 package it.prova.gestioneordiniarticolicategorie.service.categoria;
 
+import java.util.Date;
 import java.util.List;
 
 import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
@@ -7,6 +8,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 import it.prova.gestioneordiniarticolicategorie.model.Categoria;
+import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public interface CategoriaService {
 	
@@ -34,5 +36,9 @@ public interface CategoriaService {
 	public void aggiungiArticolo(Categoria categoria, Articolo articolo) throws Exception;
 
 	Categoria caricaSingoloElementoEager(Long idCategoria) throws Exception;
+
+	List<Categoria> cercaCategorieDateUnOrdine(Ordine ordine01) throws Exception;
+
+	List<String> cercaCodiciCategorieOrdiniDataUnaDataMeseAnno(Date dataMeseAnno)throws Exception;
 
 }

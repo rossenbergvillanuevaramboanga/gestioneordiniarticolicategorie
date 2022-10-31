@@ -38,4 +38,8 @@ public interface ArticoloService {
 
 	Articolo caricaSingoloElementoEager(Long idArticolo) throws Exception;
 
+	int sommaPrezziArticoliDataCategoria(Categoria categoria) throws Exception;
+
+	List<Articolo> listaArticoliConErrori() throws Exception;
+ 
 }

@@ -89,7 +89,14 @@ public class Ordine {
 
 	public void setArticoli(Set<Articolo> articoli) {
 		this.articoli = articoli;
+	}
+	@Override
+	public String toString() {
+		return "Ordine [id=" + id + ", nomeDestinatario=" + nomeDestinatario + ", indirizzoSpedizione="
+				+ indirizzoSpedizione + ", dataSpedizione=" + dataSpedizione + ", dataScadenza=" + dataScadenza + "]";
 	} 
+	
+	
 	
 	
 	

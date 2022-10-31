@@ -1,7 +1,9 @@
 package it.prova.gestioneordiniarticolicategorie.service.categoria;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
 import javax.persistence.EntityManager;
 
 import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
@@ -10,6 +12,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 import it.prova.gestioneordiniarticolicategorie.model.Categoria;
+import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public class CategoriaServiceImpl implements CategoriaService {
 	
@@ -201,11 +204,18 @@ public class CategoriaServiceImpl implements CategoriaService {
 		try {
 			
 			entityManager.getTransaction().begin();
+			//categoriaDAO.setEntityManager(entityManager);
+			//categoria.getArticoli().add(articolo);
+			//categoriaDAO.update(categoria);
 			
-			categoriaDAO.setEntityManager(entityManager);
-			
+			//Try Double Linking
+			articoloDAO.setEntityManager(entityManager);
+			if(categoria.getArticoli().contains(articolo)) throw new RuntimeException("Categoria possiede Articolo");
 			categoria.getArticoli().add(articolo);
-			categoriaDAO.update(categoria);
+			if(articolo.getCategorie().contains(categoria)) throw new RuntimeException("Articolo possiede Categoria");
+			articolo.getCategorie().add(categoria);
+			articoloDAO.update(articolo);
+			
 			
 			entityManager.getTransaction().commit();
 			
@@ -217,6 +227,40 @@ public class CategoriaServiceImpl implements CategoriaService {
 		}finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 			
+		}
+	}
+
+	@Override
+	public List<Categoria> cercaCategorieDateUnOrdine(Ordine ordine) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			categoriaDAO.setEntityManager(entityManager);
+			return categoriaDAO.findAllByOrdine(ordine);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<String> cercaCodiciCategorieOrdiniDataUnaDataMeseAnno(Date data) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			categoriaDAO.setEntityManager(entityManager);
+			return categoriaDAO.findAllCodiceCategoriOfOrdiniByDataMeseAnno(data);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 	}
 

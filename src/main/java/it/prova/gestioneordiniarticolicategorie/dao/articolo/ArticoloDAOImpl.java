@@ -88,5 +88,18 @@ public class ArticoloDAOImpl implements ArticoloDAO {
 		
 	}
 
+	@Override
+	public Long sumPrezziArticoliGivenCategoria(Categoria categoria) throws Exception {
+		// TODO Auto-generated method stub
+		return entityManager.createQuery("select SUM(a.prezzoSingolo) from Articolo a join a.categorie c where c.id = ?1 ",Long.class).setParameter(1,categoria.getId()).getResultStream().findFirst().orElse(null);
+	}
+
+	@Override
+	public List<Articolo> findArticoliWithErrors() throws Exception {
+		// TODO Auto-generated method stub
+		return entityManager.createQuery("SELECT DISTINCT a FROM Articolo a LEFT JOIN FETCH a.ordine o WHERE o.dataSpedizione > o.dataScadenza", Articolo.class)
+				.getResultList();
+	}
+
 
 }

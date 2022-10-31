@@ -93,7 +93,7 @@ public class TestGestioneOrdiniArticoliCategorie {
 		Long idOrdine = listaOrdini.get(listaOrdini.size() - 1).getId();
 		Ordine ordine = ordineServiceInstance.caricaSingoloElementoEager(idOrdine);
 		
-		Articolo articolo = new Articolo("iPhone 14 Pro Max", "ASDF1234", 1399, null);
+		Articolo articolo = new Articolo("iPhone 14 Pro Max", "ASDF1234", 1399);
 		articolo.setOrdine(ordine);
 		articoloServiceInstance.inserisciNuovo(articolo);
 		articolo = articoloServiceInstance.caricaSingoloElementoEager(articolo.getId());
@@ -158,7 +158,12 @@ public class TestGestioneOrdiniArticoliCategorie {
 		Long idCategoria = listaCategoria.get(listaCategoria.size() - 1).getId();
 		Categoria categoria = categoriaServiceInstance.caricaSingoloElementoEager(idCategoria);
 		
-		articoloServiceInstance.aggiungiCategoria(articolo, categoria);
+		try {
+			articoloServiceInstance.aggiungiCategoria(articolo, categoria);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		
 		if(articolo.getCategorie().isEmpty())
 			throw new RuntimeException("testAggiungiArticoloACategoria FAILED");
@@ -177,7 +182,7 @@ public class TestGestioneOrdiniArticoliCategorie {
 		Long idOrdine = listaOrdini.get(listaOrdini.size() - 1).getId();
 		Ordine ordine = ordineServiceInstance.caricaSingoloElementoEager(idOrdine);
 
-		Articolo articolo = new Articolo("iPhone 14 Pro Max", "ASDF1234", 1399, null);
+		Articolo articolo = new Articolo("iPhone 14 Pro Max", "ASDF1234", 1399);
 		articolo.setOrdine(ordine);
 		articoloServiceInstance.inserisciNuovo(articolo);
 		articolo = articoloServiceInstance.caricaSingoloElementoEager(articolo.getId());
@@ -186,7 +191,11 @@ public class TestGestioneOrdiniArticoliCategorie {
 		Long idCategoria = listaCategoria.get(listaCategoria.size() - 1).getId();
 		Categoria categoria = categoriaServiceInstance.caricaSingoloElementoEager(idCategoria);
 		
-		categoriaServiceInstance.aggiungiArticolo(categoria, articolo);
+		try {
+			categoriaServiceInstance.aggiungiArticolo(categoria, articolo);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		if(categoria.getArticoli().isEmpty())
 			throw new RuntimeException("testAggiungiArticoloACategoria FAILED");
@@ -277,7 +286,7 @@ public class TestGestioneOrdiniArticoliCategorie {
 		Long idOrdine = listaOrdini.get(listaOrdini.size() - 1).getId();
 		Ordine ordine = ordineServiceInstance.caricaSingoloElemento(idOrdine);
 
-		Articolo articolo = new Articolo("iPhone 13 Pro Max", "ASDF1234", 1399, null);
+		Articolo articolo = new Articolo("iPhone 13 Pro Max", "ASDF1234", 1399);
 		articolo.setOrdine(ordine);
 
 		articoloServiceInstance.inserisciNuovo(articolo);

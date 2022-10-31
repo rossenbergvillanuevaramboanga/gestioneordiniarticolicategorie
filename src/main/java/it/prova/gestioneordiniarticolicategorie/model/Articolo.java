@@ -49,12 +49,11 @@ public class Articolo {
 		
 	}
 
-	public Articolo(String descrizione, String numeroSeriale, Integer prezzoSingolo, LocalDateTime dataInserimento) {
+	public Articolo(String descrizione, String numeroSeriale, Integer prezzoSingolo) {
 		super();
 		this.descrizione = descrizione;
 		this.numeroSeriale = numeroSeriale;
 		this.prezzoSingolo = prezzoSingolo;
-		this.dataInserimento = dataInserimento;
 	}
 
 	public Long getId() {

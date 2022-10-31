@@ -224,9 +224,15 @@ public class ArticoloServiceImpl implements ArticoloService{
 			
 			entityManager.getTransaction().begin();
 			
-			articoloDAO.setEntityManager(entityManager);
+//			articoloDAO.setEntityManager(entityManager);
+//			articolo.getCategorie().add(categoria);
+//			articoloDAO.update(articolo);
 			
+			articoloDAO.setEntityManager(entityManager);
+			if(articolo.getCategorie().contains(categoria)) throw new RuntimeException("Articolo possiede Categoria");
 			articolo.getCategorie().add(categoria);
+			if(categoria.getArticoli().contains(articolo)) throw new RuntimeException("Categoria possiede Articolo");
+			categoria.getArticoli().add(articolo);
 			articoloDAO.update(articolo);
 			
 			entityManager.getTransaction().commit();
@@ -242,7 +248,37 @@ public class ArticoloServiceImpl implements ArticoloService{
 		}
 	}
 
-	
+	@Override
+	public int sommaPrezziArticoliDataCategoria(Categoria categoria) throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			articoloDAO.setEntityManager(entityManager);
+			return articoloDAO.sumPrezziArticoliGivenCategoria(categoria).intValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<Articolo> listaArticoliConErrori() throws Exception {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			articoloDAO.setEntityManager(entityManager);
+			return articoloDAO.findArticoliWithErrors();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
+import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public interface OrdineService {
@@ -19,6 +20,7 @@ public interface OrdineService {
 	public List<Ordine> listAll() throws Exception;
 
 	public Ordine caricaSingoloElemento(Long id) throws Exception;
+	
 	public Ordine caricaSingoloElementoEager(Long id) throws Exception;
 
 	public void aggiorna(Ordine ordine) throws Exception;
@@ -28,5 +30,13 @@ public interface OrdineService {
 	public void rimuovi(Long id) throws Exception;
 	
 	public void rimuoviArticoli(Long id) throws Exception;
+
+	List<Ordine> cercaOrdiniDataCategoria(Categoria categoriaLogitech) throws Exception;
+
+	Ordine ordinePiuRecenteDataCategoria(Categoria categoria) throws Exception;
+
+	int sommaPrezziArticoliDatoNomeDestinatario(String indirizzo) throws Exception;
+
+	List<String> listaIndirizziDatoNumeroSeriale(String numeroSeriale) throws Exception;
 
 }
